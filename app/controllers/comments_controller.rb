@@ -1,4 +1,5 @@
 class CommentsController < ApplicationController
+  before_action :require_signed_in
 
   def new
     if params[:goal_id]

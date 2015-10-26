@@ -11,7 +11,7 @@
 <% if @user.goals %>
 
   <% @user.goals.each_with_index do |goal, i| %>
-    <% unless current_user.id != goal.user_id && goal.private %>
+    <% unless current_user && current_user.id != goal.user_id && goal.private %>
       <br>
       <%= "#{i+1}. #{goal.goal_text}" %> --
       <%= goal.private ? "Private" : "Public" %>
@@ -43,6 +43,6 @@
 
 <br>
 
-<% unless current_user.username != @user.username %>
+<% unless current_user && current_user.username != @user.username %>
 <%= render 'goals/form' %>
 <% end %>

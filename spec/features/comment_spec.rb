@@ -17,4 +17,12 @@ feature "comment" do
     expect(page).to have_content("A comment")
   end
 
+  scenario "commenting while logged out" do
+    create_user
+    click_button "Sign Out"
+    visit user_url(1)
+    click_link "Add Comment to this User"
+    expect(page).to have_content("Sign In")
+  end
+
 end
