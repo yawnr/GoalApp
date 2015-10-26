@@ -1,4 +1,10 @@
 <h1><%= @user.username %></h1>
+<%= link_to "Add Comment to this User", new_user_comment_url(@user.id) %>
+<% if @user.comments %>
+  <% @user.comments.each do |comment| %>
+  <p> <%= comment.body %> </p>
+  <% end %>
+<% end %>
 
 <h2>Goals</h2>
 
@@ -6,9 +12,15 @@
 
   <% @user.goals.each_with_index do |goal, i| %>
     <% unless current_user.id != goal.user_id && goal.private %>
-
+      <br>
       <%= "#{i+1}. #{goal.goal_text}" %> --
       <%= goal.private ? "Private" : "Public" %>
+
+      <% if goal.comments %>
+        <% goal.comments.each do |comment| %>
+        <p> <%= comment.body %> </p>
+        <% end %>
+      <% end %>
 
       <form action="<%= goal_url(goal) %>" method="POST">
         <input type="hidden" name="_method" value="PATCH">
@@ -23,6 +35,8 @@
 
       <a href="<%= edit_goal_url(goal) %>">Edit</a>
       <%= button_to "Delete Goal", goal_url(goal), method: :delete %>
+      <%= link_to "Add Comment to this Goal", new_goal_comment_url(goal.id) %>
+      <br>
     <% end %>
   <% end %>
 <% end %>
