@@ -1,0 +1,26 @@
+<h1><%= @user.username %></h1>
+
+<h2>Goals</h2>
+
+<% if @user.goals %>
+  <% @user.goals.each_with_index do |goal, i| %>
+    <%= "#{i+1}. #{goal.goal_text}" %> --
+    <%= goal.private ? "Private" : "Public" %>
+
+    <form action="<%= goal_url(goal) %>" method="POST">
+      <input type="hidden" name="_method" value="PATCH">
+      <%= auth_token %>
+
+        <label>Completed?
+          <input type="hidden" name="goal[completed]" value="">
+          <input type="checkbox" name="goal[completed]" value="<%= goal.completed ? "false" : "true" %>" <%= "checked" if goal.completed %>>
+        <label>
+        <button>Update Status</button>
+    </form>
+
+    <a href="<%= edit_goal_url(goal) %>">Edit</a>
+    <%= button_to "Delete Goal", goal_url(goal), method: :delete %>
+  <% end %>
+<% end %>
+
+<%= render 'goals/form' %>

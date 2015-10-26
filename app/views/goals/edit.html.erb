@@ -1,0 +1,17 @@
+<form action="<%= goal_url(@goal) %>" method="post">
+  <input type="hidden" name="_method" value="patch">
+  <%= auth_token %>
+
+  <label>Edit Goal<br>
+    <textarea name="goal[goal_text]" rows=1 cols=40></textarea>
+  </label>
+
+<br>
+  <label>Flag
+    <select name="goal[private]">
+      <option value="true">Private</option>
+      <option value="false">Public</option>
+    </select>
+  </label>
+  <button>Edit Goal</button>
+</form>
