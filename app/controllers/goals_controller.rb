@@ -1,4 +1,5 @@
 class GoalsController < ApplicationController
+  before_action :require_owner, only: [:edit, :update, :destroy]
 
   def create
     @goal = Goal.new(goal_params)
@@ -41,4 +42,14 @@ class GoalsController < ApplicationController
   def goal_params
     params.require(:goal).permit(:goal_text, :completed, :private)
   end
+
+  def require_owner
+    goal = Goal.find(params[:id])
+    if goal.user_id != current_user.id
+      flash[:errors] = ["You can't update someone else's shit"]
+      redirect_to user_url(current_user)
+    end
+  end
+
+
 end

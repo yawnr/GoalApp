@@ -98,6 +98,13 @@ def create_user
   click_button "Sign Up"
 end
 
+def create_other_user
+  visit new_user_url
+  fill_in "Username", with: "BarryManilow"
+  fill_in "Password", with: "password2"
+  click_button "Sign Up"
+end
+
 def add_goal
   fill_in "New Goal", with: "Do some stuff today."
   click_button "Create Goal"

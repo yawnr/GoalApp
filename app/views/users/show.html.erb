@@ -3,24 +3,32 @@
 <h2>Goals</h2>
 
 <% if @user.goals %>
+
   <% @user.goals.each_with_index do |goal, i| %>
-    <%= "#{i+1}. #{goal.goal_text}" %> --
-    <%= goal.private ? "Private" : "Public" %>
+    <% unless current_user.id != goal.user_id && goal.private %>
 
-    <form action="<%= goal_url(goal) %>" method="POST">
-      <input type="hidden" name="_method" value="PATCH">
-      <%= auth_token %>
+      <%= "#{i+1}. #{goal.goal_text}" %> --
+      <%= goal.private ? "Private" : "Public" %>
 
-        <label>Completed?
-          <input type="hidden" name="goal[completed]" value="">
-          <input type="checkbox" name="goal[completed]" value="<%= goal.completed ? "false" : "true" %>" <%= "checked" if goal.completed %>>
-        <label>
-        <button>Update Status</button>
-    </form>
+      <form action="<%= goal_url(goal) %>" method="POST">
+        <input type="hidden" name="_method" value="PATCH">
+        <%= auth_token %>
 
-    <a href="<%= edit_goal_url(goal) %>">Edit</a>
-    <%= button_to "Delete Goal", goal_url(goal), method: :delete %>
+          <label>Completed?
+            <input type="hidden" name="goal[completed]" value="">
+            <input type="checkbox" name="goal[completed]" value="<%= goal.completed ? "false" : "true" %>" <%= "checked" if goal.completed %>>
+          <label>
+          <button>Update Status</button>
+      </form>
+
+      <a href="<%= edit_goal_url(goal) %>">Edit</a>
+      <%= button_to "Delete Goal", goal_url(goal), method: :delete %>
+    <% end %>
   <% end %>
 <% end %>
 
+<br>
+
+<% unless current_user.username != @user.username %>
 <%= render 'goals/form' %>
+<% end %>
